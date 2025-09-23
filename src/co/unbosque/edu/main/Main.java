@@ -9,7 +9,7 @@ public class Main {
 
         config.mostrarConfiguracion();
         
-        System.out.println("\n=== PRUEBA DE FUNCIONALIDAD ===");
+        System.out.println("\n=== SUPER PRUEBA DE FUNCIONALIDAD ===");
         
         System.out.println(config.getNombreAplicacion());
         System.out.println(config.getArchivoDatosEstudiantes());
