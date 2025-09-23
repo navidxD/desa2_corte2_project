@@ -1,8 +1,9 @@
-package co.unbosque.edu.model;
+package co.unbosque.edu.model.estudiante;
 
 import co.unbosque.edu.persistence.EstudianteDTO;
 
 public class Estudiante {
+	
 	private EstudianteDTO datos;
 
 	public Estudiante(EstudianteDTO datos) {

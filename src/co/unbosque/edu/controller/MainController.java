@@ -11,7 +11,7 @@ public class MainController {
 	public MainController() {
 		this.consoleView = new ConsoleView();
 		this.configuracionController = new ConfiguracionController(consoleView);
-		this.estudianteController = new EstudianteController();
+		this.estudianteController = new EstudianteController(consoleView);
 	}
 	
 	public void init() {

@@ -2,7 +2,7 @@ package co.unbosque.edu.persistence;
 
 import java.util.List;
 
-import co.unbosque.edu.model.Estudiante;
+import co.unbosque.edu.model.estudiante.Estudiante;
 
 public class EstudianteDAO {
 	
