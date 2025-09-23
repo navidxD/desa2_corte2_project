@@ -1,24 +1,12 @@
 package co.unbosque.edu.main;
 
-import co.unbosque.edu.resources.Configuracion;
+import co.unbosque.edu.controller.MainController;
 
 public class Main {
+	
     public static void main(String[] args) {
-
-        Configuracion config = new Configuracion();
-
-        config.mostrarConfiguracion();
-        
-        System.out.println("\n=== SUPER PRUEBA DE FUNCIONALIDAD ===");
-        
-        System.out.println(config.getNombreAplicacion());
-        System.out.println(config.getArchivoDatosEstudiantes());
-        
-
-
-        System.out.println(config.getMostrarCodigos());
-
-        config.mostrarConfiguracion();
-        
+    	MainController mainController = new MainController();
+    	mainController.init();
     }
+    
 }

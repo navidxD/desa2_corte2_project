@@ -4,13 +4,30 @@ import java.util.List;
 
 import co.unbosque.edu.model.Estudiante;
 
-public interface EstudianteDAO {
+public class EstudianteDAO {
 	
-    void guardarEstudiante(Estudiante estudiante);
-    Estudiante buscarPorCodigo(String codigo);
-    List<Estudiante> obtenerTodos();
-    void actualizarEstudiante(Estudiante estudiante);
-    void eliminarEstudiante(String codigo);
-    void guardarTodos(List<Estudiante> estudiantes);
+    private void guardarEstudiante(Estudiante estudiante) {
+    	
+    };
+    
+    private Estudiante buscarPorCodigo(String codigo) {
+    	return null;
+    };
+    
+    private List<Estudiante> obtenerTodos() {
+    	return null;
+    };
+    
+    private void actualizarEstudiante(Estudiante estudiante) {
+    	
+    };
+    
+    private void eliminarEstudiante(String codigo) {
+    	
+    };
+    
+    private void guardarTodos(List<Estudiante> estudiantes) {
+    	
+    };
     
 }

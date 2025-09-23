@@ -1,46 +1,39 @@
-package co.unbosque.edu.resources;
+package co.unbosque.edu.persistence;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.module.Configuration;
 import java.util.Properties;
 
-public class ConfiguracionDAO {
-    private Properties propiedades;
-    private String archivoConfig;
+import co.unbosque.edu.model.configuracion.ConfiguracionModel;
 
-    public ConfiguracionDAO(String archivoConfig) {
-        this.archivoConfig = archivoConfig;
+public class ConfiguracionDAO {
+	
+    private static final String ARCHIVO_CONFIG = "..\\assets\\config.properties";
+    private Properties propiedades;
+
+    public ConfiguracionDAO() {
         this.propiedades = new Properties();
-        cargarConfiguracion();
     }
 
     public void cargarConfiguracion() {
-        try (FileInputStream input = new FileInputStream(archivoConfig)) {
+    	try (FileInputStream input = new FileInputStream(new File(getPath()))) {
             propiedades.load(input);
-            System.out.println("Configuración cargada desde: " + archivoConfig);
+            System.out.println("Configuración cargada desde: " + ARCHIVO_CONFIG);
         } catch (IOException e) {
             System.out.println("Error al cargar configuración: " + e.getMessage());
-            establecerConfiguracionPorDefecto();
         }
     }
 
-    public void guardarConfiguracion() {
-        try (FileOutputStream output = new FileOutputStream(archivoConfig)) {
+    public void guardarConfiguracion(ConfiguracionModel configuration) {
+        try (FileOutputStream output = new FileOutputStream(new File(getPath()))) {
             propiedades.store(output, "Configuración del Sistema de Estudiantes");
-            System.out.println("Configuración guardada en: " + archivoConfig);
+            System.out.println("Configuración guardada en: " + ARCHIVO_CONFIG);
         } catch (IOException e) {
             System.out.println("Error al guardar configuración: " + e.getMessage());
         }
-    }
-
-    private void establecerConfiguracionPorDefecto() {
-        propiedades.setProperty("nombre.aplicacion", "Sistema Gestión Estudiantes");
-        propiedades.setProperty("version", "1.0.0");
-        propiedades.setProperty("archivo.datos", "estudiantes.dat");
-        propiedades.setProperty("maximo.estudiantes", "100");
-        propiedades.setProperty("mostrar.codigos", "true");
-        guardarConfiguracion();
     }
 
 
@@ -55,7 +48,11 @@ public class ConfiguracionDAO {
     public String getArchivoDatos() {
         return propiedades.getProperty("archivo.datos");
     }
-
+    
+    public String getArchivoReportes() {
+        return propiedades.getProperty("archivo.reportes");
+    }
+    
     public int getMaximoEstudiantes() {
         return Integer.parseInt(propiedades.getProperty("maximo.estudiantes"));
     }
@@ -70,5 +67,14 @@ public class ConfiguracionDAO {
 
     public void setArchivoDatos(String archivo) {
         propiedades.setProperty("archivo.datos", archivo);
+    }
+    
+    private String getPath() {
+    	String directorioActual = System.getProperty("user.dir");
+    	System.out.println("Directorio de trabajo actual: " + directorioActual);
+    	
+    	directorioActual = directorioActual + "\\src\\assets\\config.properties";
+    	
+    	return directorioActual;
     }
 }
