@@ -167,6 +167,10 @@ public class EstudianteView extends JFrame {
 	public void limpiarTabla() {
 		modeloTabla.setRowCount(0);
 	}
+	
+	public void llenarTable(Object[] fila) {
+		modeloTabla.addRow(fila);
+	}
 
 	public void agregarFilaTabla(Object[] fila) {
 		modeloTabla.addRow(fila);

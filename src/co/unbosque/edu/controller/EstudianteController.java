@@ -2,6 +2,7 @@ package co.unbosque.edu.controller;
 
 import java.util.List;
 
+import co.unbosque.edu.model.auditoria.Auditoria;
 import co.unbosque.edu.model.estudiante.RegistroEstudiante;
 import co.unbosque.edu.persistence.ConfiguracionDTO;
 import co.unbosque.edu.persistence.EstudianteDTO;
@@ -11,6 +12,7 @@ import co.unbosque.edu.view.EstudianteView;
 public class EstudianteController {
 	
 	private ConsoleView consoleView;
+	private Auditoria auditoria;
 	private EstudianteView vista;
 	private RegistroEstudiante registroEstudiante;
 	
@@ -20,6 +22,7 @@ public class EstudianteController {
 	}
 	
 	public void init(ConfiguracionDTO configuracionDTO) {
+		this.auditoria = new Auditoria(configuracionDTO.getPathReportes());
 		registroEstudiante = new RegistroEstudiante(configuracionDTO);
 		
 		listarEstudiantes();
@@ -41,14 +44,14 @@ public class EstudianteController {
         double promedio = vista.getPromedio();
 
         if (codigo.isEmpty() || nombre.isEmpty() || carrera.isEmpty() || promedio < 0) {
-            vista.mostrarMensaje("Datos inválidos, por favor verifique los campos.");
+        	printMessage("Datos inválidos, por favor verifique los campos.");
             return;
         }
 
         EstudianteDTO dto = new EstudianteDTO(codigo, nombre, carrera, promedio);
         registroEstudiante.guardarEstudiante(dto);
 
-        vista.mostrarMensaje("Estudiante registrado: " + nombre);
+        printMessage("Estudiante registrado: " + nombre);
         vista.limpiarCampos();
         listarEstudiantes();
     }
@@ -60,9 +63,9 @@ public class EstudianteController {
         EstudianteDTO e = registroEstudiante.buscarPorCodigo(codigo);
         if (e != null) {
             vista.agregarFilaTabla(new Object[]{ e.getCodigo(), e.getNombre(), e.getCarrera(), e.getPromedio() });
-            vista.mostrarMensaje("Estudiante encontrado: " + e.getNombre());
+            printMessage("Estudiante encontrado: " + e.getNombre());
         } else {
-            vista.mostrarMensaje("No se encontró estudiante con código " + codigo);
+        	printMessage("No se encontró estudiante con código " + codigo);
         }
     }
 
@@ -85,6 +88,11 @@ public class EstudianteController {
         for (EstudianteDTO e : lista) {
             vista.agregarFilaTabla(new Object[]{ e.getCodigo(), e.getNombre(), e.getCarrera(), e.getPromedio() });
         }
-        vista.mostrarMensaje("Se listaron todos los estudiantes (" + lista.size() + ")");
+        printMessage("Se listaron todos los estudiantes (" + lista.size() + ")");
+    }
+    
+    private void printMessage(String msg) {
+    	auditoria.registrarLog(msg);
+    	 vista.mostrarMensaje(msg);
     }
 }

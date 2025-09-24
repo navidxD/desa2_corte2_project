@@ -1,6 +1,6 @@
 package co.unbosque.edu.controller;
 
-import co.unbosque.edu.persistence.ConfiguracionDTO;
+import co.unbosque.edu.model.auditoria.Auditoria;
 import co.unbosque.edu.view.ConsoleView;
 
 public class MainController {
