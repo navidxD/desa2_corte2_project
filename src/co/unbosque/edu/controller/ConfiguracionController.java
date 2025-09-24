@@ -1,5 +1,6 @@
 package co.unbosque.edu.controller;
 
+import co.unbosque.edu.exceptions.FalloArchivoException;
 import co.unbosque.edu.model.configuracion.ConfiguracionModel;
 import co.unbosque.edu.persistence.ConfiguracionDTO;
 import co.unbosque.edu.view.ConsoleView;
@@ -14,17 +15,14 @@ public class ConfiguracionController {
 		this.configuracionModel = new ConfiguracionModel();
 	}
 	
-	public void init() {
+	public void init() throws FalloArchivoException {
 		configuracionModel.init();
 	}
 	
 	public ConfiguracionDTO obtenerConfig() {
-		configuracionModel.init();
-		
         ConfiguracionDTO config = configuracionModel.obtenerConfigActual();
         
-        consoleView.printMessage("\n=== SUPER PRUEBA DE FUNCIONALIDAD ===");
-        
+        consoleView.printMessage("\n=== PRUEBA DE CONFIGURACION ===");
         consoleView.printMessage(config.getNombreAplicacion());
         consoleView.printMessage(config.getPathArchivoEstudiante());
         consoleView.printMessage(config.isMostrarCodigos());

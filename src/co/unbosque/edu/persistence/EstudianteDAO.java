@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.unbosque.edu.exceptions.FalloArchivoException;
 import co.unbosque.edu.model.estudiante.Estudiante;
 
 public class EstudianteDAO {
@@ -20,13 +21,13 @@ public class EstudianteDAO {
 		this.lista = new ArrayList<Estudiante>();
 	}
 	
-    public void guardarEstudiante(Estudiante estudiante) {
+    public void guardarEstudiante(Estudiante estudiante) throws FalloArchivoException {
     	getDataFromFile();
     	lista.add(estudiante);
     	saveDataToFile();
     };
     
-    public Estudiante buscarPorCodigo(String codigo) {
+    public Estudiante buscarPorCodigo(String codigo) throws FalloArchivoException {
     	Estudiante estudiante = null;
     	getDataFromFile();
     	
@@ -40,13 +41,13 @@ public class EstudianteDAO {
     	return estudiante;
     };
     
-    public List<Estudiante> obtenerTodos() {
+    public List<Estudiante> obtenerTodos() throws FalloArchivoException {
     	getDataFromFile();
     	
     	return lista;
     };
     
-    public void actualizarEstudiante(Estudiante estudiante) {
+    public void actualizarEstudiante(Estudiante estudiante) throws FalloArchivoException {
     	getDataFromFile();
     	Estudiante e = buscarPorCodigo(estudiante.getCodigo());
     	
@@ -57,7 +58,7 @@ public class EstudianteDAO {
     	saveDataToFile();
     };
     
-    public void eliminarEstudiante(String codigo) {
+    public void eliminarEstudiante(String codigo) throws FalloArchivoException {
     	getDataFromFile();
     	Estudiante e = buscarPorCodigo(codigo);
     	
@@ -68,28 +69,26 @@ public class EstudianteDAO {
     	saveDataToFile();
     };
     
-    public void guardarTodos(List<Estudiante> estudiantes) {
+    public void guardarTodos(List<Estudiante> estudiantes) throws FalloArchivoException {
     	this.lista = estudiantes;
     	saveDataToFile();
     };
     
     
-	private void getDataFromFile() {  
+	private void getDataFromFile() throws FalloArchivoException {  
     	try (FileInputStream fileIn = new FileInputStream(path); 
     		 ObjectInputStream in = new ObjectInputStream(fileIn)) {
 
                // 1. Leer el objeto del archivo
                lista = (List<Estudiante>) in.readObject();
 
-           } catch (IOException i) {
-               System.out.println("Error de E/S: " + i.getMessage());
-           } catch (ClassNotFoundException c) {
-               System.out.println("La clase Usuario no fue encontrada.");
-               c.printStackTrace();
+           } catch (Exception e) {
+               System.out.println("Error de E/S: " + e.getMessage());
+               throw new FalloArchivoException();
            }
     }
     
-    private void saveDataToFile() {  
+    private void saveDataToFile() throws FalloArchivoException {  
     	
     	try (FileOutputStream fileIn = new FileOutputStream(path); 
     			ObjectOutputStream in = new ObjectOutputStream(fileIn)) {
@@ -99,6 +98,7 @@ public class EstudianteDAO {
 
            } catch (IOException i) {
                System.out.println("Error de E/S: " + i.getMessage());
+               throw new FalloArchivoException();
            }
     }
 }

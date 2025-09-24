@@ -6,7 +6,9 @@ public class ConfiguracionDTO {
 	private String version;
 	private String pathArchivoEstudiante;
 	private String pathReportes;
-	private int maximoEstudiantes;
+	private int maximoPorcentajeBeca;
+	private int maximaNotaPorEstudiante;
+	private double minNotaParaAprobar;
 	private boolean mostrarCodigos;
 
     public String getNombreAplicacion() {
@@ -41,13 +43,12 @@ public class ConfiguracionDTO {
 		this.pathReportes = pathReportes;
 	}
 
-	public int getMaximoEstudiantes() {
-		return maximoEstudiantes;
+	public int getMaximoPorcentajeBeca() {
+		return maximoPorcentajeBeca;
 	}
 
-
-	public void setMaximoEstudiantes(int maximoEstudiantes) {
-		this.maximoEstudiantes = maximoEstudiantes;
+	public void setMaximoPorcentajeBeca(int maximoPorcentajeBeca) {
+		this.maximoPorcentajeBeca = maximoPorcentajeBeca;
 	}
 
 	public boolean isMostrarCodigos() {
@@ -56,6 +57,22 @@ public class ConfiguracionDTO {
 
 	public void setMostrarCodigos(boolean mostrarCodigos) {
 		this.mostrarCodigos = mostrarCodigos;
+	}
+
+	public int getMaximaNotaPorEstudiante() {
+		return maximaNotaPorEstudiante;
+	}
+
+	public void setMaximaNotaPorEstudiante(int maximaNotaPorEstudiante) {
+		this.maximaNotaPorEstudiante = maximaNotaPorEstudiante;
+	}
+	
+	public double getMinNotaParaAprobar() {
+		return minNotaParaAprobar;
+	}
+	
+	public void setMinNotaParaAprobar(double minNotaParaAprobar) {
+		this.minNotaParaAprobar = minNotaParaAprobar;
 	}
 
 }

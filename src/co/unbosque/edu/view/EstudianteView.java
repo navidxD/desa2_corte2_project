@@ -2,13 +2,17 @@ package co.unbosque.edu.view;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import co.unbosque.edu.persistence.EstudianteDTO;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 public class EstudianteView extends JFrame {
 
-	private JTextField txtCodigo, txtNombre, txtCarrera, txtPromedio, txtBuscarCodigo;
+	private JTextField txtCodigo, txtNombre, txtCarrera, txtPromedio, txtPorcentajeBeca, txtBuscarCodigo;
+	private JCheckBox checkBecado;
 	private JButton btnRegistrar, btnBuscar, btnEliminar, btnListar, btnLimpiar;
 	private JTable tablaEstudiantes;
 	private DefaultTableModel modeloTabla;
@@ -16,7 +20,6 @@ public class EstudianteView extends JFrame {
 	private JPanel panelBusqueda; 
 
 	public EstudianteView() {
-		setTitle("Sistema de Gestión de Estudiantes");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(900, 700);
 		setLocationRelativeTo(null);
@@ -25,10 +28,14 @@ public class EstudianteView extends JFrame {
 		inicializarComponentes();
 		organizarComponentes();
 	}
+	
+	public void setTitulo(String titulo) {
+		setTitle(titulo);
+	}
 
 	private void inicializarComponentes() {
 
-		JPanel panelRegistro = new JPanel(new GridLayout(5, 2, 5, 5));
+		JPanel panelRegistro = new JPanel(new GridLayout(8, 2, 5, 5));
 		panelRegistro.setBorder(BorderFactory.createTitledBorder("Registro de Estudiantes"));
 
 		panelRegistro.add(new JLabel("Código:"));
@@ -46,6 +53,15 @@ public class EstudianteView extends JFrame {
 		panelRegistro.add(new JLabel("Promedio:"));
 		txtPromedio = new JTextField();
 		panelRegistro.add(txtPromedio);
+		
+		
+		panelRegistro.add(new JLabel("Es becado?:"));
+		checkBecado = new JCheckBox(); 
+		panelRegistro.add(checkBecado);
+		
+		panelRegistro.add(new JLabel("PorcentajeBeca:"));
+		txtPorcentajeBeca = new JTextField();
+		panelRegistro.add(txtPorcentajeBeca);
 
 		btnRegistrar = new JButton("Registrar");
 		btnLimpiar = new JButton("Limpiar");
@@ -76,6 +92,8 @@ public class EstudianteView extends JFrame {
 		modeloTabla.addColumn("Nombre");
 		modeloTabla.addColumn("Carrera");
 		modeloTabla.addColumn("Promedio");
+		modeloTabla.addColumn("Tiene beca?");
+		modeloTabla.addColumn("Porcentaje Beca");
 
 		tablaEstudiantes = new JTable(modeloTabla);
 		JScrollPane scrollTabla = new JScrollPane(tablaEstudiantes);
@@ -94,7 +112,7 @@ public class EstudianteView extends JFrame {
 
 
 		JPanel panelRegistro = new JPanel(new BorderLayout(5, 5));
-		panelRegistro.add(new JPanel(new GridLayout(5, 2, 5, 5)) {{
+		panelRegistro.add(new JPanel(new GridLayout(6, 2, 5, 5)) {{
 			add(new JLabel("Código:"));
 			add(txtCodigo);
 			add(new JLabel("Nombre:"));
@@ -103,6 +121,10 @@ public class EstudianteView extends JFrame {
 			add(txtCarrera);
 			add(new JLabel("Promedio:"));
 			add(txtPromedio);
+			add(new JLabel("Es becado?:"));
+			add(checkBecado);
+			add(new JLabel("Porcentaje Beca:"));
+			add(txtPorcentajeBeca);
 		}}, BorderLayout.CENTER);
 
 		JPanel panelBotonesRegistro = new JPanel(new FlowLayout());
@@ -143,12 +165,24 @@ public class EstudianteView extends JFrame {
 	public String getCarrera() {
 		return txtCarrera.getText().trim();
 	}
+	
+	public boolean isBecado() {
+		return checkBecado.isSelected();
+	}
 
 	public double getPromedio() {
 		try {
 			return Double.parseDouble(txtPromedio.getText().trim());
 		} catch (NumberFormatException e) {
 			return -1; 
+		}
+	}
+	
+	public int getPorcentajeBeca() {
+		try {
+			return Integer.parseInt(txtPorcentajeBeca.getText().trim());
+		} catch (NumberFormatException e) {
+			return 0; 
 		}
 	}
 
@@ -162,6 +196,9 @@ public class EstudianteView extends JFrame {
 		txtCarrera.setText("");
 		txtPromedio.setText("");
 		txtBuscarCodigo.setText("");
+		checkBecado.setSelected(false);
+		txtPorcentajeBeca.setText("");
+		
 	}
 
 	public void limpiarTabla() {
@@ -172,8 +209,15 @@ public class EstudianteView extends JFrame {
 		modeloTabla.addRow(fila);
 	}
 
-	public void agregarFilaTabla(Object[] fila) {
-		modeloTabla.addRow(fila);
+	public void agregarFilaATablaEstudiante(EstudianteDTO e) {
+		modeloTabla.addRow(new Object[]{ 
+        		e.getCodigo(), 
+        		e.getNombre(), 
+        		e.getCarrera(), 
+        		e.getPromedio(),
+        		e.isBecado() ? "SI" : "NO",
+        		e.getPorcentajeBeca()
+        		});
 	}
 
 	public void mostrarMensaje(String mensaje) {

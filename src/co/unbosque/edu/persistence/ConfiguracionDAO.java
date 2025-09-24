@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.module.Configuration;
 import java.util.Properties;
 
+import co.unbosque.edu.exceptions.FalloArchivoException;
 import co.unbosque.edu.model.configuracion.ConfiguracionModel;
 
 public class ConfiguracionDAO {
@@ -18,21 +19,23 @@ public class ConfiguracionDAO {
         this.propiedades = new Properties();
     }
 
-    public void cargarConfiguracion() {
+    public void cargarConfiguracion() throws FalloArchivoException {
     	try (FileInputStream input = new FileInputStream(new File(getPath()))) {
             propiedades.load(input);
             System.out.println("Configuración cargada desde: " + ARCHIVO_CONFIG);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error al cargar configuración: " + e.getMessage());
+            throw new FalloArchivoException();
         }
     }
 
-    public void guardarConfiguracion(ConfiguracionModel configuration) {
+    public void guardarConfiguracion(ConfiguracionModel configuration) throws FalloArchivoException {
         try (FileOutputStream output = new FileOutputStream(new File(getPath()))) {
             propiedades.store(output, "Configuración del Sistema de Estudiantes");
             System.out.println("Configuración guardada en: " + ARCHIVO_CONFIG);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error al guardar configuración: " + e.getMessage());
+            throw new FalloArchivoException();
         }
     }
 
@@ -53,8 +56,16 @@ public class ConfiguracionDAO {
         return propiedades.getProperty("archivo.reportes");
     }
     
-    public int getMaximoEstudiantes() {
-        return Integer.parseInt(propiedades.getProperty("maximo.estudiantes"));
+    public int getMaximoPorcentajeBeca() {
+        return Integer.parseInt(propiedades.getProperty("estudiantes.becaporcentaje_maximo"));
+    }
+    
+    public int getMaximaNotaPorEstudiante() {
+        return Integer.parseInt(propiedades.getProperty("estudiantes.maxima_nota"));
+    }
+    
+    public double getMinNotaAprobada() {
+        return Double.parseDouble(propiedades.getProperty("estudiantes.min_nota_aprobada"));
     }
 
     public boolean getMostrarCodigos() {
